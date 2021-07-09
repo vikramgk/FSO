@@ -1,0 +1,14 @@
+# p0e0.6
+# Create a diagram depicting the situation where the user creates a 
+# new note using the single page version of the app.
+# created on https://www.websequencediagrams.com/
+
+note over browser:
+Browser pushes submitted content 
+(locally) to its notes list and 
+re-renders notes list only. Then
+sneds content to server.
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: {"message":"note created"}
