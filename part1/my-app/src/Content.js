@@ -1,15 +1,11 @@
+import Part from './Part'
+
 const Content = ({parts, exercises}) => {
     return (
         <div>
-            <p>
-                {parts.part1} {exercises.exercises1}
-            </p>
-            <p>
-                {parts.part2} {exercises.exercises2}
-            </p>
-            <p>
-                {parts.part3} {exercises.exercises3}
-            </p>
+            <Part part={parts.part1} exercise={exercises.exercises1}/>
+            <Part part={parts.part2} exercise={exercises.exercises2}/>
+            <Part part={parts.part3} exercise={exercises.exercises3}/>
         </div>
     )
 }
