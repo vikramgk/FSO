@@ -1,3 +1,3 @@
-const Statistic = ({ text, value }) => <p>{text}: {value}</p>
+const Statistic = ({ text, value }) => <tr><td>{text}</td><td>{value}</td></tr>
 
 export default Statistic;
