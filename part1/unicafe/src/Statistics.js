@@ -1,3 +1,5 @@
+import Statistic from "./Statistic";
+
 const Statistics = (props) => {
 
     return (
@@ -5,24 +7,12 @@ const Statistics = (props) => {
             <h1>statistics</h1>
             {props.allFeedback > 0 ?
                 <div>
-                    <p>
-                        good {props.good}
-                    </p>
-                    <p>
-                        neutral {props.neutral}
-                    </p>
-                    <p>
-                        bad {props.bad}
-                    </p>
-                    <p>
-                        all {props.allFeedback}
-                    </p>
-                    <p>
-                        average {props.averageFeedback}
-                    </p>
-                    <p>
-                        positive {props.positiveFeedback}
-                    </p>
+                    <Statistic text="good" value={props.good}/>
+                    <Statistic text="neutral" value={props.neutral}/>
+                    <Statistic text="bad" value={props.bad}/>
+                    <Statistic text="all" value={props.allFeedback}/>
+                    <Statistic text="average" value={props.averageFeedback}/>
+                    <Statistic text="positive" value={props.positiveFeedback}/>
                 </div>
                 :
                 <p>No feedback given.</p>
