@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Statistics from './Statistics'
 
 const App = () => {
   // save clicks of each button to its own state
@@ -9,8 +10,9 @@ const App = () => {
   const [averageFeedback, setAverageFeedback] = useState(0)
   const [positiveFeedback, setPositiveFeedback] = useState(0)
 
+
   const handleAverage = () => {
-    setAverageFeedback((good + neutral + bad)/3)
+    setAverageFeedback((good + neutral + bad) / 3)
   }
 
   const handleAll = () => {
@@ -18,7 +20,7 @@ const App = () => {
   }
 
   const handlePositive = () => {
-    setPositiveFeedback(good /( good + neutral + bad ))
+    setPositiveFeedback(good / (good + neutral + bad))
   }
 
   const handleGoodClick = () => {
@@ -56,28 +58,15 @@ const App = () => {
       <button onClick={handleBadClick}>
         bad
       </button>
-      
-      <h1>statistics</h1>
 
-      <p>
-        good {good}
-      </p>
-      <p>
-        neutral {neutral}
-      </p>
-      <p>
-        bad {bad}
-      </p>
-      <p>
-        all {allFeedback}
-      </p>
-      <p>
-        average {averageFeedback}
-      </p>
-      <p>
-        positive {positiveFeedback}
-      </p>
-
+      <Statistics 
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        allFeedback={allFeedback}
+        averageFeedback={averageFeedback}
+        positiveFeedback={positiveFeedback}
+      />
     </div>
   )
 }
