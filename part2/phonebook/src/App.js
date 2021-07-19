@@ -7,15 +7,22 @@ const App = () => {
   const [newName, setNewName] = useState('')
 
   const handleInput = (event) => setNewName(event.target.value);
+
+  const checkIfExists = () => persons.some(person => person.name === newName);
+
   // take newName state, put in object and concat to state
   const handleSubmit = (event) => {
     event.preventDefault()
     // you are assigning a new object so it has to be an array too
-    setPersons([
-      ...persons,
-      {name: newName}
-    ]);
-    setNewName('');
+    if (!checkIfExists()) {
+      setPersons([
+        ...persons,
+        {name: newName}
+      ]);
+      setNewName('');
+    } else {
+      alert(`${newName} already exists in the phonebook.`);
+    }
   };
 
   return (
