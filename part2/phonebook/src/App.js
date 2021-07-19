@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
+import Filter from './components/Filter'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -32,7 +35,6 @@ const App = () => {
           number: newPhone
         }
       ]);
-      console.log(persons);
       setNewName('');
       setNewPhone('');
     } else {
@@ -44,22 +46,18 @@ const App = () => {
     <div>
     {/*<div>debug: {JSON.stringify(filteredArray)}</div>*/}
       <h2>Phonebook</h2>
-        <p>filter names:</p>
-        <input value={filterTerm} onChange={handleFilter}></input>
+        <Filter filterTerm={filterTerm} handleFilter={handleFilter}/>
       <h2>Add a new number</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameInput} />
-          <br />
-          no.: <input value={newPhone} onChange={handleNumberInput} />
-        </div>
-        <div>
-          <button type='submit'>add</button>
-        </div>
-      </form>
+        <PersonForm 
+          handleSubmit={handleSubmit}
+          newName={newName}
+          newPhone={newPhone}
+          handleNameInput={handleNameInput}
+          handleNumberInput={handleNumberInput}
+        />
       <h2>Numbers</h2>
-      {filteredArray.map(person => <p key={person.name}>{person.name} {person.number}</p>)}
-    </div>
+        <Persons filteredArray={filteredArray} />
+      </div>
   )
 }
 
