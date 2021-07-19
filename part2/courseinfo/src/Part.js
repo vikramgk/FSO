@@ -1,6 +1,6 @@
-const Part = ({part, key}) => {
+const Part = ({part}) => {
     return (
-      <p key={key}>
+      <p>
         {part.name} {part.exercises}
       </p>    
     )
