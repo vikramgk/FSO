@@ -1,10 +1,11 @@
+import Header from "./Header";
+import Content from "./Content";
+
 const Course = ({ course }) => {
     return (
         <div>
-            <h1>{ course.name }</h1>
-            {course.parts.map((part) => 
-                <p key={part.id}>{part.name} {part.exercises}</p>
-            )}
+            <Header name={course.name}/>
+            <Content parts={course.parts}/>
         </div>
     )
 }

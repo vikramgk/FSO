@@ -1,11 +1,13 @@
 import Part from './Part'
 
-const Content = ({ course }) => {
+const Content = ({ parts }) => {
     return (
         <div>
-            <Part part={course.parts[0]} />
-            <Part part={course.parts[1]} />
-            <Part part={course.parts[2]} />
+            {parts.map((part) =>{
+                console.log(part);
+                return <Part part={part} key={part.key} />
+            }
+            )}
         </div>
     )
 }
