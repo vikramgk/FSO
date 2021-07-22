@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
+import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -17,6 +18,19 @@ const App = () => {
   const handleNameInput = (event) => setNewName(event.target.value);
   const handleNumberInput = (event) => setNewPhone(event.target.value);
   const handleFilter = (event) => setfilterTerm(event.target.value);
+
+  useEffect(() => {
+    console.log("effect")
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log(response)
+        setPersons(response.data)
+      })
+    // return () => {
+    //   cleanup
+    // }
+  }, [])
 
   var filteredArray = filterTerm ?
     persons.filter(person => person.name.toLowerCase().includes(filterTerm)) :
