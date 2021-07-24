@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -21,8 +21,8 @@ const App = () => {
 
   useEffect(() => {
     console.log("effect")
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
         console.log(response)
         setPersons(response.data)
@@ -32,7 +32,7 @@ const App = () => {
   var filteredArray = filterTerm ?
     persons.filter(person => person.name.toLowerCase().includes(filterTerm)) :
     [];
-    
+
   const checkIfExists = () => persons.some(person => person.name === newName);
 
   const addPerson = () => {
@@ -41,24 +41,20 @@ const App = () => {
       number: newPhone
     }
 
-    axios
-      .post('http://localhost:3001/persons', newPerson)
-      // .then(response => console.response)
+    personService
+      .addPerson(newPerson)
+      .then(response => {
+        // add the created object to the state
+        setPersons([
+          ...persons,
+          response.data
+        ]);
+      })
   }
 
-  // take newName state, put in object and concat to state
   const handleSubmit = (event) => {
     event.preventDefault()
-    // you are assigning a new object so it has to be an array too
     if (!checkIfExists()) {
-      setPersons([
-        ...persons,
-        {
-          name: newName,
-          number: newPhone
-        }
-      ]);
-
       addPerson();
       setNewName('');
       setNewPhone('');
@@ -70,18 +66,18 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-        <Filter filterTerm={filterTerm} handleFilter={handleFilter}/>
+      <Filter filterTerm={filterTerm} handleFilter={handleFilter} />
       <h2>Add a new number</h2>
-        <PersonForm 
-          handleSubmit={handleSubmit}
-          newName={newName}
-          newPhone={newPhone}
-          handleNameInput={handleNameInput}
-          handleNumberInput={handleNumberInput}
-        />
+      <PersonForm
+        handleSubmit={handleSubmit}
+        newName={newName}
+        newPhone={newPhone}
+        handleNameInput={handleNameInput}
+        handleNumberInput={handleNumberInput}
+      />
       <h2>Numbers</h2>
-        <Persons filteredArray={filteredArray} />
-      </div>
+      <Persons filteredArray={filteredArray} />
+    </div>
   )
 }
 
