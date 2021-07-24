@@ -66,19 +66,19 @@ const App = () => {
       // update server
       personService
         .updatePerson(newPersonDetails)
+        .then(response => {
+          // update local state
+          const personsTemp = [...persons]
+          const updatedPerson = response.data
 
-      // update local state
-      const personsTemp = [...persons]
-      const person = {...personsTemp[currentPersonDetailsIndex]}
+          personsTemp[currentPersonDetailsIndex] = updatedPerson
+          setPersons(personsTemp)
 
-      person.number = newPhone
-      personsTemp[currentPersonDetailsIndex] = person
+          // reset input fields 
+          setNewName('');
+          setNewPhone('');
 
-      setPersons(personsTemp)
-
-      // reset input fields 
-      setNewName('');
-      setNewPhone('');
+        })
     }
   }
 
@@ -97,8 +97,7 @@ const App = () => {
     if (window.confirm(`Are you sure you want to delete ${person}?`)) {
       personService
         .deletePerson(id)
-
-      setPersons(persons.filter(person => person.id !== id ? person : null))
+        .then(() => setPersons(persons.filter(person => person.id !== id ? person : null))) 
     }
   }
 
