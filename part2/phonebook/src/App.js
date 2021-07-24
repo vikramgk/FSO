@@ -3,7 +3,7 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import personService from './services/persons'
-import SuccessMessage from './components/SuccessMessage'
+import Message from './components/Message'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -15,7 +15,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filterTerm, setfilterTerm] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
+  const [message, setMessage] = useState({message: '', type:''})
 
   const handleNameInput = (event) => setNewName(event.target.value);
   const handleNumberInput = (event) => setNewPhone(event.target.value);
@@ -54,9 +54,9 @@ const App = () => {
         ]);
       })
       .then(() => {
-        setSuccessMessage(`${newPerson.name} added!`)
+        setMessage({message: `${newPerson.name} added!`, type: 'success'})
         setTimeout(() => {
-          setSuccessMessage('')
+          setMessage({message: '', type:''})
         }, 5000)
       })
       
@@ -88,12 +88,17 @@ const App = () => {
           setNewPhone('');
         })
         .then(() => {
-          setSuccessMessage(`${newPersonDetails.name} updated!`)
+          setMessage({message: `${newPersonDetails.name} updated!`, type: 'success'})
           setTimeout(() => {
-            setSuccessMessage('')
+            setMessage({message: '', type:''})
           }, 5000)
         })
-
+        .catch(error => {
+          setMessage({message: `Information on ${newPersonDetails.name}  has been deleted from the server.`, type: 'error'})
+          setTimeout(() => {
+            setMessage({message: '', type:''})
+          }, 5000)
+        })
     }
   }
 
@@ -119,7 +124,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <SuccessMessage message={successMessage} />
+      <Message message={message.message} type={message.type}/>
       <Filter filterTerm={filterTerm} handleFilter={handleFilter} />
       <h2>Add a new number</h2>
       <PersonForm
