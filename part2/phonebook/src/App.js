@@ -3,6 +3,7 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import personService from './services/persons'
+import SuccessMessage from './components/SuccessMessage'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -14,6 +15,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filterTerm, setfilterTerm] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   const handleNameInput = (event) => setNewName(event.target.value);
   const handleNumberInput = (event) => setNewPhone(event.target.value);
@@ -51,6 +53,13 @@ const App = () => {
           response.data
         ]);
       })
+      .then(() => {
+        setSuccessMessage(`${newPerson.name} added!`)
+        setTimeout(() => {
+          setSuccessMessage('')
+        }, 5000)
+      })
+      
   }
 
   const updatePerson = () => {
@@ -77,8 +86,14 @@ const App = () => {
           // reset input fields 
           setNewName('');
           setNewPhone('');
-
         })
+        .then(() => {
+          setSuccessMessage(`${newPersonDetails.name} updated!`)
+          setTimeout(() => {
+            setSuccessMessage('')
+          }, 5000)
+        })
+
     }
   }
 
@@ -97,13 +112,14 @@ const App = () => {
     if (window.confirm(`Are you sure you want to delete ${person}?`)) {
       personService
         .deletePerson(id)
-        .then(() => setPersons(persons.filter(person => person.id !== id ? person : null))) 
+        .then(() => setPersons(persons.filter(person => person.id !== id ? person : null)))
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <SuccessMessage message={successMessage} />
       <Filter filterTerm={filterTerm} handleFilter={handleFilter} />
       <h2>Add a new number</h2>
       <PersonForm
