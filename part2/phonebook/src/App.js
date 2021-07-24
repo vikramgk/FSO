@@ -24,7 +24,6 @@ const App = () => {
     personService
       .getAll()
       .then(response => {
-        console.log(response)
         setPersons(response.data)
       })
   }, [])
@@ -34,6 +33,8 @@ const App = () => {
     [];
 
   const checkIfExists = () => persons.some(person => person.name === newName);
+  const findPerson = personName => persons.find(person => person.name === personName);
+  const findPersonIndex = personName => persons.findIndex(person => person.name === personName);
 
   const addPerson = () => {
     const newPerson = {
@@ -52,6 +53,35 @@ const App = () => {
       })
   }
 
+  const updatePerson = () => {
+    if (window.confirm(`${newName} already exists in the phonebook, would you like to update their number to ${newPhone}?`)) {
+      const currentPersonDetails = findPerson(newName)
+      const currentPersonDetailsIndex = findPersonIndex(newName)
+
+      const newPersonDetails = {
+        ...currentPersonDetails,
+        number: newPhone
+      }
+
+      // update server
+      personService
+        .updatePerson(newPersonDetails)
+
+      // update local state
+      const personsTemp = [...persons]
+      const person = {...personsTemp[currentPersonDetailsIndex]}
+
+      person.number = newPhone
+      personsTemp[currentPersonDetailsIndex] = person
+
+      setPersons(personsTemp)
+
+      // reset input fields 
+      setNewName('');
+      setNewPhone('');
+    }
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
     if (!checkIfExists()) {
@@ -59,7 +89,7 @@ const App = () => {
       setNewName('');
       setNewPhone('');
     } else {
-      alert(`${newName} already exists in the phonebook.`);
+      updatePerson()
     }
   };
 
@@ -67,6 +97,7 @@ const App = () => {
     if (window.confirm(`Are you sure you want to delete ${person}?`)) {
       personService
         .deletePerson(id)
+
       setPersons(persons.filter(person => person.id !== id ? person : null))
     }
   }
