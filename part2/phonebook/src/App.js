@@ -27,15 +27,24 @@ const App = () => {
         console.log(response)
         setPersons(response.data)
       })
-    // return () => {
-    //   cleanup
-    // }
   }, [])
 
   var filteredArray = filterTerm ?
     persons.filter(person => person.name.toLowerCase().includes(filterTerm)) :
     [];
+    
   const checkIfExists = () => persons.some(person => person.name === newName);
+
+  const addPerson = () => {
+    const newPerson = {
+      name: newName,
+      number: newPhone
+    }
+
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+      // .then(response => console.response)
+  }
 
   // take newName state, put in object and concat to state
   const handleSubmit = (event) => {
@@ -49,6 +58,8 @@ const App = () => {
           number: newPhone
         }
       ]);
+
+      addPerson();
       setNewName('');
       setNewPhone('');
     } else {
@@ -58,7 +69,6 @@ const App = () => {
 
   return (
     <div>
-    {/*<div>debug: {JSON.stringify(filteredArray)}</div>*/}
       <h2>Phonebook</h2>
         <Filter filterTerm={filterTerm} handleFilter={handleFilter}/>
       <h2>Add a new number</h2>

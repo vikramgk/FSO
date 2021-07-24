@@ -11,7 +11,7 @@ const CountryDetails = ({ country }) => {
                 console.log(JSON.stringify(response.data, null, 2))
                 setWeather(response.data.current)
             })
-    }, [])
+    }, [REACT_APP_WEATHER_API_KEY, country.name])
 
 
     return (
@@ -28,7 +28,7 @@ const CountryDetails = ({ country }) => {
             <div>
                 <img alt='flag' height="50px" src={country.flag} />
             </div>
-            {Object.keys(weather).length != 0 ? <div><h2>weather in {country.name}</h2>
+            {Object.keys(weather).length !== 0 ? <div><h2>weather in {country.name}</h2>
                 <img alt='weather-icon' src={weather.weather_icons} />
                 <div>
                     temperature: {JSON.stringify(weather.temperature)} degrees
