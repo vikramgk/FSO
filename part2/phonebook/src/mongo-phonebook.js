@@ -1,12 +1,3 @@
-// fetch all 3 input cli arguments -> node mongo.js yourpassword Anna 040-1234556
-// connect
-// add to phone book and print input -> added Anna number 040-1234556 to phonebook
-// if only password arg, print all people in phonebook -> node mongo.js yourpassword, prints
-// phonebook:
-// Anna 040-1234556
-// Arto Vihavainen 045-1232456
-// Ada Lovelace 040-1231236
-
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
