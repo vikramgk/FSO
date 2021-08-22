@@ -22,7 +22,7 @@ const App = () => {
   const handleFilter = (event) => setfilterTerm(event.target.value);
 
   useEffect(() => {
-    console.log("effect")
+    console.log("useEffect()")
     personService
       .getAll()
       .then(response => {
