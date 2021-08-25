@@ -6,16 +6,11 @@ import personService from './services/persons'
 import Message from './components/Message'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filterTerm, setfilterTerm] = useState('')
-  const [message, setMessage] = useState({message: '', type:''})
+  const [message, setMessage] = useState({ message: '', type: '' })
 
   const handleNameInput = (event) => setNewName(event.target.value);
   const handleNumberInput = (event) => setNewPhone(event.target.value);
@@ -54,15 +49,21 @@ const App = () => {
         ]);
       })
       .then(() => {
-        setMessage({message: `${newPerson.name} added!`, type: 'success'})
+        setMessage({ message: `${newPerson.name} added!`, type: 'success' })
         setTimeout(() => {
-          setMessage({message: '', type:''})
+          setMessage({ message: '', type: '' })
         }, 5000)
       })
-      
+      .catch(error => {
+        setMessage({ message: JSON.stringify(error.response.data.message), type: 'error' })
+        setTimeout(() => {
+          setMessage({ message: '', type: '' })
+        }, 5000)
+      })
+
   }
 
-  const updatePerson = () => {
+  const updatePersonDetails = () => {
     if (window.confirm(`${newName} already exists in the phonebook, would you like to update their number to ${newPhone}?`)) {
       const currentPersonDetails = findPerson(newName)
       const currentPersonDetailsIndex = findPersonIndex(newName)
@@ -88,16 +89,23 @@ const App = () => {
           setNewPhone('');
         })
         .then(() => {
-          setMessage({message: `${newPersonDetails.name} updated!`, type: 'success'})
+          setMessage({ message: `${newPersonDetails.name} updated!`, type: 'success' })
           setTimeout(() => {
-            setMessage({message: '', type:''})
+            setMessage({ message: '', type: '' })
           }, 5000)
         })
         .catch(error => {
-          setMessage({message: `Information on ${newPersonDetails.name}  has been deleted from the server.`, type: 'error'})
-          setTimeout(() => {
-            setMessage({message: '', type:''})
-          }, 5000)
+          if (error.response.data.name === "ValidationError") {
+            setMessage({ message: JSON.stringify(error.response.data.message), type: 'error' })
+            setTimeout(() => {
+              setMessage({ message: '', type: '' })
+            }, 5000)
+          } else {
+            setMessage({ message: `Information on ${newPersonDetails.name}  has been deleted from the server.`, type: 'error' })
+            setTimeout(() => {
+              setMessage({ message: '', type: '' })
+            }, 5000)
+          }
         })
     }
   }
@@ -109,7 +117,7 @@ const App = () => {
       setNewName('');
       setNewPhone('');
     } else {
-      updatePerson()
+      updatePersonDetails()
     }
   };
 
@@ -124,7 +132,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Message message={message.message} type={message.type}/>
+      <Message message={message.message} type={message.type} />
       <Filter filterTerm={filterTerm} handleFilter={handleFilter} />
       <h2>Add a new number</h2>
       <PersonForm
